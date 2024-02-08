@@ -162,7 +162,7 @@ const ListItem = ({ note, index, moveCard, editNote, removeNote }) => {
     setToggle(true);
 
     setTimeout(() => {
-      if (inputRef) inputRef?.current.focus();
+      inputRef && inputRef?.current.focus();
     }, 0);
   };
 

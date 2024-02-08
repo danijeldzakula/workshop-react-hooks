@@ -1,16 +1,12 @@
 import { createContext, useContext, useMemo, useState, useEffect } from 'react';
-import { STORAGE_WIDGET, HAS_WINDOW } from '@/helpers/constant';
+import { STORAGE_THEME, HAS_WINDOW } from '@/helpers/constant';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 
 const AppContext = createContext(null);
 
 export const AppProvider = ({ children }) => {
-  const { width, height } = useWindowDimensions();
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [refetchWidget, setRefetchWidget] = useState(false);
-
-  const [widgets, setWidgets] = useState(() => {
-    const widgets = JSON.parse(localStorage.getItem(STORAGE_WIDGET));
+  const [theme, setTheme] = useState(() => {
+    const widgets = JSON.parse(localStorage.getItem(STORAGE_THEME));
 
     if (widgets !== null) {
       return widgets || [];
@@ -21,13 +17,13 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     if (HAS_WINDOW) {
-      localStorage.setItem(STORAGE_WIDGET, JSON.stringify(widgets));
+      localStorage.setItem(STORAGE_THEME, JSON.stringify(theme));
     }
-  }, [widgets, refetchWidget]);
+  }, [theme]);
 
   const value = useMemo(() => {
-    return {};
-  }, []);
+    return {theme, setTheme};
+  }, [theme, setTheme]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
