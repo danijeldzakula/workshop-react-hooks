@@ -18,6 +18,7 @@ export default function Test() {
     <Layout>
       <section className="section__test">
         <div>
+          <h1 className='text-3xl font-bold underline'>SASS</h1>
           <Suspense fallback={false}>
             <RenderName setData={setData} />
             <RenderNumber setData={setData} />

@@ -1,11 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path, { resolve } from 'path';
+import tailwindcss from 'tailwindcss';
 
 export default defineConfig({
   plugins: [react()],
   css: {
     devSourcemap: true,
+    postcss: {
+      plugins: [tailwindcss()],
+    },
   },
   build: {
     target: 'esnext',
