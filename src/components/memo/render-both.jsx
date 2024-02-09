@@ -19,11 +19,12 @@ const RenderBoth = ({ names, numbers }) => {
   console.log('re-render both');
 
   return (
-    <div className='p-8'>
-      <h2 className='mb-4 pb-4 border-b'>Render Both</h2>
+    <div>
+      <h2 className='mb-4 pb-4 border-b text-2xl'>Render Both</h2>
       <ul>{listItem()}</ul>
     </div>
   );
 };
 
-export default memo(RenderBoth);
+export default RenderBoth;
+// export default memo(RenderBoth);

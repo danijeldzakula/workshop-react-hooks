@@ -6,7 +6,7 @@ const initNames = ['React', 'Memo'];
 const RenderName = ({ setData }) => {
   const [names, setNames] = useState(initNames);
 
-  const addNewName = () => {
+  const addNewName = useCallback(() => {
     setNames((prev) => {
       if (prev.includes('❤')) {
         return prev;
@@ -17,9 +17,9 @@ const RenderName = ({ setData }) => {
 
       return [...reverse];
     });
-  };
+  }, []);
 
-  const reverseNames = () => {
+  const reverseNames = useCallback(() => {
     setNames((prev) => {
       const reverse = [...prev];
 
@@ -27,11 +27,11 @@ const RenderName = ({ setData }) => {
 
       return reverse;
     });
-  };
+  }, []);
 
-  const resetNames = () => {
+  const resetNames = useCallback(() => {
     setNames(initNames);
-  };
+  }, []);
 
   const listItems = useCallback(() => {
     return names.map((item) => {
@@ -53,8 +53,8 @@ const RenderName = ({ setData }) => {
   console.log('re-render names');
 
   return (
-    <div className='p-8'>
-      <h2 className='mb-4 pb-4 border-b'>Render Name</h2>
+    <div>
+      <h2 className='mb-4 pb-4 border-b text-2xl'>Render Name</h2>
 
       <div className='flex gap-4 mb-4'>
         <button className='rounded-md p-2 px-4 bg-neutral-200' onClick={addNewName}>Add new name</button>

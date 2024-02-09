@@ -1,4 +1,4 @@
-import { memo, useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import { memo, useEffect, useState, useCallback, useRef } from 'react';
 
 async function getAllProducts() {
   return await new Promise((resolve) => {
@@ -69,10 +69,10 @@ const RenderData = () => {
   console.log('re-render data');
 
   return (
-    <div className='p-8'>
+    <div>
       <div className='mb-4 pb-4 border-b flex justify-between'>
-        <h2>Render Data</h2>
-        <button className='rounded-md px-4' type='button' onClick={handleRefetch}>Refetch</button>
+        <h2 className='text-2xl'>Render Data</h2>
+        <button className='rounded-md py-2 px-4 bg-purple-500 text-white' type='button' onClick={handleRefetch}>Refetch</button>
       </div>
 
       <div>{productList()}</div>

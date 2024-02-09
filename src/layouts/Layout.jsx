@@ -1,9 +1,11 @@
+import Header from '@/components/header/header';
 import { ToastContainer } from 'react-toastify';
 
-export default function Layout({ children, pathname }) {
+export default function Layout({ className, children }) {
   return (
     <div className="app">
-      <main>{children}</main>
+      <Header />
+      <main className={className}>{children}</main>
       <ToastContainer />
     </div>
   );

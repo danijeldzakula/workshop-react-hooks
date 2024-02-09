@@ -6,13 +6,13 @@ const AppContext = createContext(null);
 
 export const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    const widgets = JSON.parse(localStorage.getItem(STORAGE_THEME));
+    const data = JSON.parse(localStorage.getItem(STORAGE_THEME));
 
-    if (widgets !== null) {
-      return widgets || [];
+    if (data !== null) {
+      return data || 'light';
     }
 
-    return [];
+    return 'light';
   });
 
   useEffect(() => {

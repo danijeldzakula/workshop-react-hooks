@@ -2,5 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-main {
+html.dark {
+  @apply bg-black text-white;
+}
+
+html.dark .header {
+  @apply border-b border-zinc-800;
 }

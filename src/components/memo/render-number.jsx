@@ -7,7 +7,7 @@ const RenderNumber = ({ setData }) => {
   const [numbers, setNumbers] = useState(initNumbers);
   const [hasReverse, setHasReverse] = useState(false);
 
-  const addNewNumber = () => {
+  const addNewNumber = useCallback(() => {
     setNumbers((prev) => {
       if (!hasReverse) {
         const last = prev[prev.length - 1] + 1;
@@ -17,9 +17,9 @@ const RenderNumber = ({ setData }) => {
       const first = prev[0] + 1;
       return [first, ...prev];
     });
-  };
+  }, []);
 
-  const undoNumber = () => {
+  const undoNumber = useCallback(() => {
     setNumbers((prev) => {
       if (!hasReverse) {
         if (prev.length <= initNumbers.length) {
@@ -38,21 +38,21 @@ const RenderNumber = ({ setData }) => {
       prev.shift();
       return [...prev];
     });
-  };
+  }, []);
 
-  const reverseNumbers = () => {
+  const reverseNumbers = useCallback(() => {
     setHasReverse((p) => !p);
     setNumbers((prev) => {
       const reverse = [...prev];
       reverse.reverse();
       return reverse;
     });
-  };
+  }, []);
 
-  const resetNumbers = () => {
+  const resetNumbers = useCallback(() => {
     setNumbers(initNumbers);
     setHasReverse(false);
-  };
+  }, []);
 
   const listItems = useCallback(() => {
     return numbers.map((item) => {
@@ -75,8 +75,8 @@ const RenderNumber = ({ setData }) => {
   console.log('re-render numbers');
 
   return (
-    <div className='p-8'>
-      <h2 className='mb-4 pb-4 border-b'>Render Number</h2>
+    <div>
+      <h2 className='mb-4 pb-4 border-b text-2xl'>Render Number</h2>
 
       <div className='flex gap-4 mb-4'>
         <button className='rounded-md p-2 px-4 bg-neutral-200' type="button" onClick={addNewNumber}>Add new number</button>

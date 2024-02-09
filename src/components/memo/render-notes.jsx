@@ -32,11 +32,11 @@ const RenderNotes = ({ setData }) => {
   const inputRef = useRef(null);
   const [form, setForm] = useState(initForm);
 
-  const onChange = (event) => {
+  const onChange = useCallback((event) => {
     setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-  };
+  }, []);
 
-  const onSubmit = (event) => {
+  const onSubmit = useCallback((event) => {
     event.preventDefault();
 
     const payload = {
@@ -57,9 +57,9 @@ const RenderNotes = ({ setData }) => {
     });
 
     inputRef.current.focus();
-  };
+  }, []);
 
-  const editNote = (data) => {
+  const editNote = useCallback((data) => {
     setNotes((prev) => {
       const findNote = prev.find((p) => p._id === data._id);
 
@@ -73,9 +73,9 @@ const RenderNotes = ({ setData }) => {
     toast.info('Updated this note, this is a success!', {
       position: toast.POSITION.BOTTOM_LEFT,
     });
-  };
+  }, []);
 
-  const removeNote = (id) => {
+  const removeNote = useCallback((id) => {
     setNotes((prev) => {
       const notes = prev.filter((p) => p._id !== id);
       return notes;
@@ -86,7 +86,7 @@ const RenderNotes = ({ setData }) => {
     toast.error('Removed this note, this is a success!', {
       position: toast.POSITION.BOTTOM_LEFT,
     });
-  };
+  }, []);
 
   const removeAllNotes = () => {
     setNotes([]);
@@ -101,7 +101,7 @@ const RenderNotes = ({ setData }) => {
     });
   }, [notes]);
 
-  const moveCard = (dragIndex, hoverIndex) => {
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
     setNotes((prev) =>
       update(prev, {
         $splice: [
@@ -110,7 +110,7 @@ const RenderNotes = ({ setData }) => {
         ],
       })
     );
-  };
+  }, []);
 
   const listNotes = useCallback(() => {
     return notes.map((note, idx) => {
@@ -121,13 +121,14 @@ const RenderNotes = ({ setData }) => {
   console.log('re-render notes');
 
   return (
-    <div className='p-8'>
-      <h2 className='mb-4 pb-4 border-b'>Notes List</h2>
-
-      <button className='p-2 bg-neutral-200 mb-4 rounded-md' type='button' onClick={removeAllNotes}>Clear All</button>
+    <div>
+      <div className='flex justify-between border-b mb-4 pb-4'>
+        <h2 className='text-2xl'>Notes List</h2>
+        <button className='p-2 bg-neutral-200 rounded-md' type='button' onClick={removeAllNotes}>Clear All</button>
+      </div>
 
       <form className='grid' onSubmit={onSubmit}>
-        <div className='flex'>
+        <div className='flex gap-2'>
           <input className='px-4 rounded-md bg-neutral-200 w-max p-2' ref={inputRef} type="text" name="title" placeholder="Notes" value={form.title} onChange={onChange} />
           <button className='rounded-md bg-purple-700 text-white p-2 px-4' type="submit">Save</button>
         </div>
