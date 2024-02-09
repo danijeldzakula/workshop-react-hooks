@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 
-const RenderBoth = memo(({ names, numbers }) => {
+const RenderBoth = ({ names, numbers }) => {
   const listItem = useCallback(() => {
     return names.map((item) => {
       return (
@@ -19,11 +19,11 @@ const RenderBoth = memo(({ names, numbers }) => {
   console.log('re-render both');
 
   return (
-    <div>
-      <h2>Render Both</h2>
+    <div className='p-8'>
+      <h2 className='mb-4 pb-4 border-b'>Render Both</h2>
       <ul>{listItem()}</ul>
     </div>
   );
-});
+};
 
-export default RenderBoth;
+export default memo(RenderBoth);

@@ -3,7 +3,7 @@ import { memo, useEffect, useState, useCallback } from 'react';
 
 const initNames = ['React', 'Memo'];
 
-const RenderName = memo(({ setData }) => {
+const RenderName = ({ setData }) => {
   const [names, setNames] = useState(initNames);
 
   const addNewName = () => {
@@ -53,16 +53,21 @@ const RenderName = memo(({ setData }) => {
   console.log('re-render names');
 
   return (
-    <div>
-      <h2>Render Name</h2>
-      <button onClick={addNewName}>Add new name</button>
-      <button onClick={reverseNames}>Reverse</button>
-      <button disabled={isDisabled} onClick={resetNames}>
-        Reset
-      </button>
+    <div className='p-8'>
+      <h2 className='mb-4 pb-4 border-b'>Render Name</h2>
+
+      <div className='flex gap-4 mb-4'>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' onClick={addNewName}>Add new name</button>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' onClick={reverseNames}>Reverse</button>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' disabled={isDisabled} onClick={resetNames}>
+          Reset
+        </button>
+      </div>
+
       <ul>{listItems()}</ul>
     </div>
   );
-});
+};
 
 export default RenderName;
+// export default memo(RenderName);

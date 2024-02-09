@@ -15,7 +15,7 @@ async function getAllProducts() {
   });
 }
 
-const RenderData = memo(() => {
+const RenderData = () => {
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState('idle');
   const [refetch, setRefetch] = useState(false);
@@ -54,7 +54,7 @@ const RenderData = memo(() => {
 
     return products.map((product) => {
       return (
-        <div key={product._id} className="card">
+        <div key={product._id} className="grid gap-4">
           <figure></figure>
           <div>{product.title}</div>
         </div>
@@ -69,15 +69,16 @@ const RenderData = memo(() => {
   console.log('re-render data');
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className='p-8'>
+      <div className='mb-4 pb-4 border-b flex justify-between'>
         <h2>Render Data</h2>
-        <button onClick={handleRefetch}>Refetch</button>
+        <button className='rounded-md px-4' type='button' onClick={handleRefetch}>Refetch</button>
       </div>
 
       <div>{productList()}</div>
     </div>
   );
-});
+};
 
 export default RenderData;
+// export default memo(RenderData);

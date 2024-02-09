@@ -1,25 +1,17 @@
 import { uuidv4 } from '@/helpers';
 import update from 'immutability-helper';
-import { ESCAPE_CODE, ESCAPE_KEY, ESC_KEY, HAS_WINDOW, STORAGE_NOTES } from '@/helpers/constant';
-import { memo, useEffect, useId, useRef, useState, useCallback } from 'react';
+import { HAS_WINDOW, STORAGE_NOTES } from '@/helpers/constant';
+import { memo, useEffect, useRef, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { useDrag, useDrop } from 'react-dnd';
+import { ListItem } from './list-item';
 import 'react-toastify/dist/ReactToastify.css';
-
-const style = {
-  border: '1px solid #d9d9d9',
-  padding: '20px 15px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  cursor: 'move',
-};
 
 const initForm = {
   title: '',
   _id: '',
 };
 
-const RenderNotes = memo(({ setData }) => {
+const RenderNotes = ({ setData }) => {
   const [refetchNotes, setRefetchNotes] = useState(false);
   const [notes, setNotes] = useState(() => {
     const data = JSON.parse(localStorage.getItem(STORAGE_NOTES));
@@ -129,138 +121,22 @@ const RenderNotes = memo(({ setData }) => {
   console.log('re-render notes');
 
   return (
-    <div>
-      <h2>Notes List</h2>
-      <button onClick={removeAllNotes}>Clear All</button>
+    <div className='p-8'>
+      <h2 className='mb-4 pb-4 border-b'>Notes List</h2>
 
-      <form onSubmit={onSubmit}>
-        <label htmlFor="titleId">Title</label>
-        <input ref={inputRef} id="titleId" type="text" name="title" placeholder="Notes" value={form.title} onChange={onChange} />
-        <button type="submit">Save</button>
+      <button className='p-2 bg-neutral-200 mb-4 rounded-md' type='button' onClick={removeAllNotes}>Clear All</button>
+
+      <form className='grid' onSubmit={onSubmit}>
+        <div className='flex'>
+          <input className='px-4 rounded-md bg-neutral-200 w-max p-2' ref={inputRef} type="text" name="title" placeholder="Notes" value={form.title} onChange={onChange} />
+          <button className='rounded-md bg-purple-700 text-white p-2 px-4' type="submit">Save</button>
+        </div>
       </form>
 
-      {notes.length > 0 ? <ul className="notes">{listNotes()}</ul> : <p>No found data</p>}
+      {notes.length > 0 ? <ul className="grid grid-cols-4 gap-4 mt-4 pt-4 border-t">{listNotes()}</ul> : <p className='p-4'>No found data</p>}
     </div>
-  );
-});
-
-const ListItem = ({ note, index, moveCard, editNote, removeNote }) => {
-  const id = useId();
-  const ref = useRef(null);
-  const inputRef = useRef(null);
-  const [toggle, setToggle] = useState(false);
-  const [form, setForm] = useState({
-    updateTitle: note.title,
-    _id: note._id,
-  });
-
-  const onChange = (event) => {
-    setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-  };
-
-  const toggleEditNote = () => {
-    setToggle(true);
-
-    setTimeout(() => {
-      inputRef && inputRef?.current.focus();
-    }, 0);
-  };
-
-  const handleSaveNote = (event) => {
-    event.preventDefault();
-    const payload = {
-      title: form.updateTitle,
-      _id: form._id,
-    };
-    editNote(payload);
-    setToggle(false);
-  };
-
-  const [{ handlerId }, drop] = useDrop({
-    accept: 'card',
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
-    hover(item, monitor) {
-      if (!ref.current) {
-        return;
-      }
-      const dragIndex = item.index;
-      const hoverIndex = index;
-
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
-      moveCard(dragIndex, hoverIndex);
-
-      item.index = hoverIndex;
-    },
-  });
-
-  const [{ isDragging }, drag] = useDrag({
-    type: 'card',
-    item: () => {
-      return { id, index };
-    },
-    collect: (monitor) => {
-      return {
-        isDragging: monitor.isDragging(),
-      };
-    },
-  });
-
-  const opacity = isDragging ? 0 : 1;
-
-  drag(drop(ref));
-
-  const onEscape = (event) => {
-    if (event.key === ESCAPE_KEY || event.key === ESC_KEY || event.which === ESCAPE_CODE) {
-      setToggle(false);
-    }
-  };
-
-  useEffect(() => {
-    toggle && HAS_WINDOW && window.addEventListener('keydown', onEscape, false);
-
-    return () => {
-      toggle && HAS_WINDOW && window.removeEventListener('keydown', onEscape, false);
-    };
-  }, [toggle]);
-
-  return (
-    <li ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
-      {!toggle ? (
-        <div>
-          <p>{note.title}</p>
-          <button onClick={toggleEditNote}>Edit</button>
-        </div>
-      ) : (
-        <form onSubmit={handleSaveNote}>
-          <label htmlFor={id}>Title</label>
-          <input ref={inputRef} id={id} type="text" value={form.updateTitle} name="updateTitle" placeholder="Notes" onChange={onChange} />
-          <button type="submit">Save</button>
-        </form>
-      )}
-
-      <button onClick={() => removeNote(note._id)}>Remove</button>
-    </li>
   );
 };
 
 export default RenderNotes;
+// export default memo(RenderNotes);

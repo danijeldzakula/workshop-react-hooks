@@ -3,7 +3,7 @@ import { memo, useEffect, useState, useCallback } from 'react';
 
 const initNumbers = [1];
 
-const RenderNumber = memo(({ setData }) => {
+const RenderNumber = ({ setData }) => {
   const [numbers, setNumbers] = useState(initNumbers);
   const [hasReverse, setHasReverse] = useState(false);
 
@@ -75,19 +75,20 @@ const RenderNumber = memo(({ setData }) => {
   console.log('re-render numbers');
 
   return (
-    <div>
-      <h2>Render Number</h2>
-      <button onClick={addNewNumber}>Add new number</button>
-      <button onClick={reverseNumbers}>Reverse</button>
-      <button disabled={hasDisabled} onClick={undoNumber}>
-        Undo
-      </button>
-      <button disabled={isDisabled} onClick={resetNumbers}>
-        Reset
-      </button>
+    <div className='p-8'>
+      <h2 className='mb-4 pb-4 border-b'>Render Number</h2>
+
+      <div className='flex gap-4 mb-4'>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' type="button" onClick={addNewNumber}>Add new number</button>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' type="button" onClick={reverseNumbers}>Reverse</button>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' type="button" disabled={hasDisabled} onClick={undoNumber}>Undo</button>
+        <button className='rounded-md p-2 px-4 bg-neutral-200' type="button" disabled={isDisabled} onClick={resetNumbers}>Reset</button>
+      </div>
+      
       <ul>{listItems()}</ul>
     </div>
   );
-});
+};
 
 export default RenderNumber;
+// export default memo(RenderNumber);

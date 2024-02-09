@@ -1,17 +1,16 @@
 import { useState, useCallback, useLayoutEffect } from 'react';
+import { HAS_WINDOW } from '@/helpers/constant';
 
 export default function useWindowDimensions() {
-  const hasWindow = typeof window !== 'undefined';
-
   const getWindowDimensions = useCallback(() => {
-    const width = hasWindow ? window.innerWidth : null;
-    const height = hasWindow ? window.innerHeight : null;
+    const width = HAS_WINDOW ? window.innerWidth : null;
+    const height = HAS_WINDOW ? window.innerHeight : null;
 
     return {
       width,
       height
     };
-  }, [hasWindow]);
+  }, []);
 
   const [windowDimesionse, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -20,12 +19,12 @@ export default function useWindowDimensions() {
       setWindowDimensions(getWindowDimensions());
     }
 
-    hasWindow && window.addEventListener('resize', handleResize);
+    HAS_WINDOW && window.addEventListener('resize', handleResize);
 
     return () => {
-      hasWindow && window.removeEventListener('resize', handleResize);
+      HAS_WINDOW && window.removeEventListener('resize', handleResize);
     };
-  }, [getWindowDimensions, hasWindow]);
+  }, [getWindowDimensions]);
 
   return windowDimesionse;
 }
